@@ -22,16 +22,34 @@ public class Main {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("epicode");
         EntityManager em = emf.createEntityManager();
 
+
         EventoDAO eventoDAO = new EventoDAO(em);
         PersonaDAO personaDAO = new PersonaDAO(em);
         LocationDAO locationDAO = new LocationDAO(em);
         PartecipazioneDAO partecipazioneDAO = new PartecipazioneDAO(em);
 
+        em.getTransaction().begin();
 
-        Location location = new Location(null, "Eventi Roma", "Via Roma");
-        Persona persona = new Persona(null, "Giovanni", "Rossi", "giovannirossi@gmail.com", LocalDate.of(1990, 5, 5), Sesso.M);
-        Evento evento = new Evento(null, "Sotto le stelle di Roma", LocalDate.of(2025, 01, 10), "Evento sotto le stelle presentato da Mario", TipoEvento.PUBBLICO, 150, location );
-        Partecipazione partecipazione = new Partecipazione(null, Stato.CONFERMATA, evento, persona);
+
+
+
+
+
+      Location location = new Location(null,"Roma Eventi", "Roma",null);
+      locationDAO.save(location);
+      Evento evento = new Evento(null, "Concerto", LocalDate.of(2023, 12, 31), "Un concerto di musica", TipoEvento.PUBBLICO, 100, location, null);
+      eventoDAO.save(evento);
+      Persona persona = new Persona(null, LocalDate.of(1990, 5, 15), "mariorossi@gmail.com", "Mario", "Rossi", Sesso.M,null);
+      personaDAO.save(persona);
+      Partecipazione partecipazione = new Partecipazione(null, Stato.CONFERMATA, evento, persona );
+      partecipazioneDAO.save(partecipazione);
+
+
+
+        em.getTransaction().commit();
+
+        em.close();
+        emf.close();
 
     }
 }

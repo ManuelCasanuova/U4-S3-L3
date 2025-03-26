@@ -1,6 +1,10 @@
 package it.epicode.classi.location;
 
+import it.epicode.classi.evento.Evento;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "location")
@@ -10,16 +14,20 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 100, nullable = false)
     private String nome;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 100, nullable = false)
     private String citta;
 
-    public Location(Long id, String nome, String citta) {
+    @OneToMany(mappedBy = "location")
+    private List<Evento> eventi= new ArrayList<>();
+
+    public Location(Long id, String nome, String citta, List<Evento> eventi) {
         this.id = id;
         this.nome = nome;
         this.citta = citta;
+        this.eventi = eventi;
     }
 
     public Location() {

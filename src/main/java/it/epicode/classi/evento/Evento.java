@@ -2,9 +2,12 @@ package it.epicode.classi.evento;
 
 import it.epicode.classi.enums.TipoEvento;
 import it.epicode.classi.location.Location;
+import it.epicode.classi.partecipazione.Partecipazione;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "eventi")
@@ -13,13 +16,13 @@ public class Evento {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(length = 50, nullable = false, unique = true)
+    @Column(length = 250, nullable = false, unique = true)
     private String titolo;
 
-    @Column(nullable = false)
+
     private LocalDate dataEvento;
 
-    @Column(length = 50)
+
     private String descrizione;
 
     @Enumerated(EnumType.STRING)
@@ -27,9 +30,19 @@ public class Evento {
 
     private int numeroMassimoPartecipanti;
 
+    @ManyToOne
     private Location location;
 
-    public Evento(Long id, String titolo, LocalDate dataEvento, String descrizione, TipoEvento tipoEvento, int numeroMassimoPartecipanti, Location location) {
+    @OneToMany(mappedBy = "evento")
+    private List<Partecipazione> partecipazioni= new ArrayList<>();
+
+
+    /*
+    * 1 evento ha 1 location
+    * 1 location è in molti eventi
+     */
+
+    public Evento(Long id, String titolo, LocalDate dataEvento, String descrizione, TipoEvento tipoEvento, int numeroMassimoPartecipanti, Location location, List<Partecipazione> partecipazioni) {
         this.id = id;
         this.titolo = titolo;
         this.dataEvento = dataEvento;
@@ -37,6 +50,7 @@ public class Evento {
         TipoEvento = tipoEvento;
         this.numeroMassimoPartecipanti = numeroMassimoPartecipanti;
         this.location = location;
+        this.partecipazioni = partecipazioni;
     }
 
     public Evento() {

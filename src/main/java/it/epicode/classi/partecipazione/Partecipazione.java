@@ -13,11 +13,10 @@ public class Partecipazione {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-
-    @ManyToMany(mappedBy = "partecipazioni", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
     private Persona persona;
 
-    @ManyToMany (mappedBy = "partecipazioni", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
     private Evento evento;
 
     @Enumerated(EnumType.STRING)

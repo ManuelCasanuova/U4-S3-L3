@@ -1,9 +1,12 @@
 package it.epicode.classi.persona;
 
 import it.epicode.classi.enums.Sesso;
+import it.epicode.classi.partecipazione.Partecipazione;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "persone")
@@ -27,15 +30,17 @@ public class Persona {
     @Enumerated(EnumType.STRING)
     private Sesso sesso;
 
-  /*  public List<ListaPartecipazioni> partecipazioni = new ArrayList<>();*/
+    @OneToMany(mappedBy = "persona")
+    private List<Partecipazione> listaPartecipazioni = new ArrayList<>();
 
-    public Persona(Long id, String nome, String cognome, String email, LocalDate dataDiNascita, Sesso sesso) {
+    public Persona(Long id, LocalDate dataDiNascita, String email, String nome, String cognome, Sesso sesso, List<Partecipazione> listaPartecipazioni) {
         this.id = id;
+        this.dataDiNascita = dataDiNascita;
+        this.email = email;
         this.nome = nome;
         this.cognome = cognome;
-        this.email = email;
-        this.dataDiNascita = dataDiNascita;
         this.sesso = sesso;
+        this.listaPartecipazioni = listaPartecipazioni;
     }
 
     public Persona() {
